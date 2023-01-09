@@ -13,11 +13,9 @@
 .contato__lista{
     display: flex;
     justify-content: center;
+    gap: 10px;
     align-items: center;
     margin: 0 auto;
-}
-
-.contato__lista{
     background-color: #FFFFFF;
     border-radius: 10px;
     width: 80%;
@@ -26,7 +24,6 @@
 
 .contato__lista-item--imagem{
     width: 40px;
-    padding: 5px;
     margin: 0 10px;
 }
 
