@@ -1,0 +1,50 @@
+.rodape{
+    width: 100%;
+    background-color: #FFFFFF;
+}
+
+.rodape__titulo{
+    font-size: 1.5rem;
+    text-align: center;
+    padding: 20px 0 10px 0;
+    color: #FF6B35;
+}
+
+.contato__lista{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.contato__lista{
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    width: 80%;
+    padding: 10px;
+}
+
+.contato__lista-item--imagem{
+    width: 40px;
+    padding: 5px;
+    margin: 0 10px;
+}
+
+.copyright{
+    background-color: #161925;
+    padding: 10px;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+@media screen and (min-width: 1024px){
+    .rodape{
+        margin-top: 2rem;
+    }
+    .rodape__titulo{
+        font-size: 2rem;
+    }
+    .contato__lista-item--imagem{
+        width: 50px;
+    }
+}

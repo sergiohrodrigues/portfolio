@@ -1,0 +1,10 @@
+.contato__lista{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.contato__lista-item--imagem{
+    width: 50px;
+}

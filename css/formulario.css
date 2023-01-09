@@ -1,0 +1,92 @@
+.formulario{
+    padding: 4.1rem 1rem 1rem 1rem;
+}
+
+.formulario__titulo{
+    font-size: 1.8rem;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.form__item{
+    margin: 0 auto 10px auto;
+}
+
+.form__item-titulo{
+    font-size: 1.5rem;
+}
+
+.form__item-input{
+    width: 90%;
+    display: block;
+    padding: 1rem;
+    border: none;
+    border: 2px solid rgb(60, 60, 246);
+    border-radius: 1rem;
+}
+
+.mensagem__form-erro{
+    display: none;
+    margin: 0.1rem 0 0 0.8rem;
+    color: red;
+}
+
+.form__btn{
+    display: block;
+    width: 30%;
+    padding: 10px;
+    background-color: black;
+    border-radius: 10px;
+    color: #FFFFFF;
+    margin-top: 10px;
+}
+
+.form__btn:hover{
+    background-color: #FFFFFF;
+    color: black;
+}
+
+.mensagem__form-ok{
+    color: green;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+@media screen and (min-width: 768px){
+    .formulario{
+        width: 70%;
+        margin: 0 auto;
+    }
+    .form__btn{
+        max-width: 130px;
+        padding: 1rem;
+        font-size: 1.3rem;
+    }
+}
+
+@media screen and (min-width: 1024px){
+    .formulario{
+        width: 70%;
+        margin: 0 auto;
+    }
+    .formulario__titulo{
+        font-size: 2rem;
+    }
+    .form__item-titulo{
+        font-size: 1.6rem;
+    }
+    .form__item{
+        margin-bottom: 1rem;
+    }
+    .form__btn{
+        max-width: 130px;
+        padding: 1rem;
+        font-size: 1.3rem;
+    }
+    .form__btn:hover{
+        cursor: pointer;
+        background-color: #150578;
+        color: #FFFFFF;
+        transition: 1s;
+    }
+}
