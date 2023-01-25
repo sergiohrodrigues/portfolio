@@ -1,5 +1,5 @@
 const campo = document.querySelector("#showText");
-const text = "Olá, eu me chamo Sérgio, e sou Desenvolvedor Front-end.";
+const text = "Desenvolvedor Front-end";
 const interval = 80;
 
 function showText(campo, text, interval){

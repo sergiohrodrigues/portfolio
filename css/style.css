@@ -1,12 +1,19 @@
 @import './header.css';
 @import './sobre.css';
 @import './projetos.css';
-@import './diferenciais.css';
+@import './habilidades.css';
+@import './soft.css';
 @import './formulario.css';
-@import './contato-rodape.css';
+@import './contato.css';
+@import './footer.css';
+@import './diferenciais.css';
+
+html{
+    scroll-behavior: smooth;
+}
 
 body{
-    background-color: gray;
+    background-image: linear-gradient(#FFFFFF, rgb(91, 91, 91));
     font-size: 16px;
     font-family: 'Roboto Condensed', sans-serif;
 }

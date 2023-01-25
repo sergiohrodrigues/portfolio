@@ -1,17 +1,16 @@
 .diferenciais{
     text-align: center;
-    padding-top: 80px;
+    padding-top: 5rem;
 }
 
 .diferenciais__titulo{
-    font-size: 2rem;
+    font-size: 1.7rem;
 }
 
 .diferenciais__lista{
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 0.5rem 0;
     position: relative;
 }
 
@@ -52,7 +51,7 @@
 }
 
 .acessibilidade-menor{
-    width: 230px;
+    width: 180px;
     height: 150px;
 }
 

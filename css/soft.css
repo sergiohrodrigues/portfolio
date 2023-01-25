@@ -1,0 +1,79 @@
+.soft__titulo{
+    font-size: 1.5rem;
+}
+
+.soft__titulo-sub{
+    font-size: 1.7rem;
+}
+
+.soft__lista{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 0;
+}
+
+.soft__lista-btn{
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    justify-content: center;
+    gap: 60%;
+    
+    position: absolute;
+    top: 83px;
+    right: 0px;
+}
+
+.soft_lista-item{
+    border-radius: 10px;
+}
+
+.fa-brands{
+    font-size: 7rem;
+    color: #FFFFFF;
+}
+
+.soft__lista-item--titulo{
+    font-size: 1.5rem;
+    color: #FFFFFF;
+}
+
+.soft__lista-item--descricao{
+    padding: 0 1rem;
+}
+
+@media screen and (min-width: 768px){
+    .soft__lista-btn{
+        width: 60%;
+        right: 20%;
+    }
+    .soft__lista{
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 2rem;
+    }
+    .soft_lista-item:last-child{
+        border-right: none;
+    }
+    .soft__lista-btn{
+        display: none;
+    }
+}
+
+@media screen and (min-width: 1024px){
+    .soft{
+        padding: 0 5rem;
+    }
+    .soft__titulo{
+        font-size: 1.5rem;
+    }
+    .soft__lista{
+        flex-direction: column;
+    }
+    .fa-brands{
+        font-size: 3rem;
+    }
+}

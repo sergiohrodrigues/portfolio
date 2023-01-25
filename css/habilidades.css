@@ -1,0 +1,111 @@
+.habilidades{
+    text-align: center;
+    padding-top: 5rem;
+}
+
+.habilidades__titulo{
+    font-size: 1.7rem;
+}
+
+.habilidades__lista{
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem 0;
+    position: relative;
+}
+
+.habilidades__lista-btn{
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    justify-content: center;
+    gap: 60%;
+    
+    position: absolute;
+    top: 58px;
+    right: 0px;
+}
+
+.habilidades_lista-item{
+    max-width: 150px;
+    border-radius: 10px;
+
+    display: none;
+}
+
+.habilidades_lista-item--active{
+    display: block;
+}
+
+.fa-brands{
+    font-size: 7rem;
+    color: #FFFFFF;
+}
+
+.habilidades__lista-item--titulo{
+    font-size: 1.5rem;
+    margin-top: 1rem;
+    color: #FFFFFF;
+}
+
+.habilidades__lista-item--descricao{
+    padding: 0 1rem;
+}
+
+.habilidades__estudando{
+    font-size: 1.3rem;
+    margin-top: 1rem;
+}
+
+.divisao{
+    width: 50%;
+    margin: 3rem auto;
+}
+
+@media screen and (min-width: 768px){
+    .habilidades__lista-btn{
+        width: 60%;
+        right: 20%;
+    }
+    .habilidades__lista{
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+    .habilidades_lista-item{
+        width: 200px;
+        display: block;
+        border-right: 1px solid #FFFFFF;
+        border-radius: 0;
+    }
+    .habilidades_lista-item:last-child{
+        border-right: none;
+    }
+    .habilidades__lista-btn{
+        display: none;
+    }
+}
+
+@media screen and (min-width: 1024px){
+    .habilidades{
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        padding: 7rem 4rem 0 2rem;
+        position: relative;
+    }
+    .habilidades__titulo{
+        font-size: 1.5rem;
+    }
+    .habilidades_lista-item{
+        border: none;
+    }
+    .fa-brands{
+        font-size: 3rem;
+    }
+    .divisao{
+        width: 0;
+        margin: 3rem 0;
+    }
+}

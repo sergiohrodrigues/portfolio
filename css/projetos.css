@@ -1,27 +1,29 @@
 .projetos{
-    padding: 80px 0 1.3rem 0;
+    padding: 5rem 0 1.3rem 0;
     text-align: center;
+    position: relative;
 }
 
 .projetos__titulo{
-    font-size: 2rem;
+    font-size: 1.7rem;
 }
 
 .projetos__lista{
-    position: relative;
-    margin: 1rem 0;
+    margin-bottom: 1rem;
     display: flex;
     flex-direction: column;
 }
 
 .projetos__lista-btn{
-    width: 95%;
+    width: 100%;
+    max-width: 750px;
     display: flex;
-    justify-content: space-between;
-
+    justify-content: center;
+    gap: 75%;
+    
     position: absolute;
-    top: 42%;
-    right: 3%;
+    top: 215px;
+    right: 0px;
 }
 
 .fa-solid{
@@ -78,16 +80,6 @@
 
 @media screen and (min-width: 768px){
     .projetos__lista-btn{
-        width: 60%;
-        right: 20%;
-    } 
-}
-
-@media screen and (min-width: 1024px){
-    .projetos__titulo{
-        font-size: 2rem;
-    }
-    .projetos__lista-btn{
         display: none;
     }
     .projetos__lista{
@@ -102,6 +94,15 @@
         width: 350px;
         height: 320px;
     }
+}
+
+@media screen and (min-width: 1024px){
+    .projetos__titulo{
+        font-size: 2rem;
+    }
+    .projetos__lista-btn{
+        display: none;
+    }
     .projetos__lista-item--imagem{
         height: 200px;
     }
@@ -112,11 +113,16 @@
         padding: 1rem;
         font-size: 1.2rem;
     }
-    .projetos__observacao-github--link:hover{
-        color: #150578;
-        transition: 1s;
+    .projetos__observacao-descricao{
+        margin-top: 4rem;
+        font-size: 2rem;
     }
     .projetos__observacao-github{
         margin-top: 1rem;
+        font-size: 1.8rem;
+    }
+    .projetos__observacao-github--link:hover{
+        color: #150578;
+        transition: 0.5s;
     }
 }

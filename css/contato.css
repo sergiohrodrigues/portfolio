@@ -5,6 +5,39 @@
     margin: 0 auto;
 }
 
-.contato__lista-item--imagem{
-    width: 50px;
+.contato__titulo{
+    font-size: 1.7rem;
+    text-align: center;
+    padding: 20px 0 10px 0;
+    color: black;
+}
+
+.contato__lista{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+    margin: 0 auto;
+    width: 80%;
+    padding: 10px;
+    border-top: 1px solid #FFFFFF;
+}
+
+.fa-whatsapp, .fa-linkedin, .fa-github, .fa-instagram{
+    font-size: 3rem;
+    color: black;
+}
+
+@media screen and (min-width: 1024px){
+    .contato__titulo{
+        font-size: 2rem;
+    }
+    .fa-whatsapp:hover, .fa-linkedin:hover, .fa-github:hover, .fa-instagram:hover{
+        color: #FFFFFF;
+        transition: 0.5s;
+    }
+    .fa-whatsapp, .fa-linkedin, .fa-github, .fa-instagram{
+        font-size: 4rem;
+        margin-right: 2rem;
+    }
 }

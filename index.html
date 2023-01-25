@@ -18,11 +18,14 @@
 <body>
     <header class="header">
         <h3 class="header__titulo">Port<span class="header__titulo-span">folio</span></h3>
-        <ul class="header__lista">
-            <li class="header__lista-item"><a href="#sobre" class="header__lista-item--link">Sobre</a></li>
-            <li class="header__lista-item"><a href="#projetos" class="header__lista-item--link">Projetos</a></li>
-            <li class="header__lista-item"><a href="#diferenciais" class="header__lista-item--link">Diferenciais</a></li>
-            <li class="header__lista-item"><a href="#rodape" class="header__lista-item--link">Contato</a></li>
+        <i class="fa-solid fa-bars" style="color: gray;" style="size: 30px;" id="menu"></i>
+        <ul class="lista">
+            <i class="fa-solid fa-xmark" style="color: gray;" id="menu-close" style="size: 2rem;"></i>
+            <li class="lista-item"><a href="#sobre" class="lista-item--link">Sobre</a></li>
+            <li class="lista-item"><a href="#projetos" class="lista-item--link">Projetos</a></li>
+            <li class="lista-item"><a href="#habilidades-skills" class="lista-item--link">Habilidades</a></li>
+            <li class="lista-item"><a href="#diferenciais" class="lista-item--link">Diferenciais</a></li>
+            <li class="lista-item"><a href="#contato" class="lista-item--link">Contato</a></li>
         </ul>
     </header>
     <main class="container">
@@ -32,9 +35,10 @@
             <div class="sobre__caixa">
                 <img src="./imgs/perfil.png" alt="perfil" class="sobre__caixa-imagem">
                 <div class="sobre__caixa-caixa">
-                    <h4 class="sobre__caixa-descricao">Você que precisa alcançar mais clientes, entre em contato comigo que vou te ajudar com esse objetivo atraves de um Website.</h4>
+                    <h4 class="sobre__caixa-descricao">Olá, eu me chamo Sérgio, e sou de Cornélio Procópio - Paraná.</h4>
                     <p class="sobre__caixa-paragrafo">Logo abaixo tenho alguns projetos que fiz, fique à vontade para dar uma olhada.</p>
                 </div>
+                <img src="./imgs/perfill.png" alt="perfil" class="sobre__caixa-imagem-desktop">
             </div>
         </section>
         <section class="projetos" id="projetos">
@@ -73,6 +77,69 @@
                 <p class="projetos__observacao-github">Clique aqui <a href="https://github.com/sergiohrodrigues" target="_blank" class="projetos__observacao-github--link">Github</a></p>
             </div>
         </section>
+
+        <section class="habilidades" id="habilidades-skills">
+            <div>
+                <h2 class="habilidades__titulo">Habilidades</h2>
+                <ul class="habilidades__lista">
+                    <div class="habilidades__lista-btn">
+                        <i class="fa-solid fa-arrow-left" id="btnHabilidadesLeft"></i>
+                        <i class="fa-solid fa-arrow-right" id="btnHabilidadesRight"></i>
+                    </div>
+        
+                    <li class="habilidades_lista-item habilidades_lista-item--active" data-habilidades>
+                        <i class="fa-brands fa-html5"></i>
+                        <div>
+                            <h3 class="habilidades__lista-item--titulo">HTML</h3>
+                        </div>
+                    </li>
+        
+                    <li class="habilidades_lista-item" data-habilidades>
+                        <i class="fa-brands fa-css3-alt"></i>
+                        <div>
+                            <h3 class="habilidades__lista-item--titulo">CSS</h3>
+                        </div>
+                    </li>
+        
+                    <li class="habilidades_lista-item" data-habilidades>
+                        <i class="fa-brands fa-js"></i>
+                        <div>
+                            <h3 class="habilidades__lista-item--titulo">Javascript</h3>    
+                        </div>
+                    </li>
+        
+                    <li class="habilidades_lista-item" data-habilidades>
+                        <i class="fa-brands fa-react"></i>
+                        <div>
+                            <h3 class="habilidades__lista-item--titulo">ReactJs</h3>
+                        </div>
+                    </li>
+                </ul>
+                <p class="habilidades__estudando">Estudando no momento: Typescript</p>
+            </div>
+
+            <hr class="divisao">
+            
+            <div class="soft">
+                <h2 class="soft__titulo">Habilidades</h2>
+                <h3 class="soft__titulo-sub">Interpessoais (Softskills)</h3>
+                <ul class="soft__lista">
+                    <li class="soft_lista-item">
+                        <h3 class="soft__lista-item--titulo">Comunicação</h3>
+                    </li>
+                    <li class="soft_lista-item">
+                        <h3 class="soft__lista-item--titulo">Proatividade</h3>
+                    </li>
+                    <li class="soft_lista-item">
+                        <h3 class="soft__lista-item--titulo">Trabalho em equipe</h3>
+                    </li>
+                    <li class="soft_lista-item">
+                        <h3 class="soft__lista-item--titulo">Ouvinte</h3>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
         <section class="diferenciais" id="diferenciais">
             <h2 class="diferenciais__titulo">Diferenciais</h2>
             <ul class="diferenciais__lista">
@@ -83,7 +150,7 @@
                 <li class="diferenciais_lista-item diferenciais_lista-item--active" data-diferencial>
                     <img src="./imgs/diferenciais/responsivo.png" alt="sites responsivos" class="diferenciais__lista-item--imagem responsivo-menor">
                     <div>
-                        <h3 class="diferenciais__lista-item--titulo">Sites responsivos</h3>
+                        <h3 class="diferenciais__lista-item--titulo">Responsividade</h3>
                         <p class="diferenciais__lista-item--descricao">Responsividade em seus sites para qualquer tipo de aparelho.</p>
                     </div>
                 </li>
@@ -101,16 +168,10 @@
                         <p class="diferenciais__lista-item--descricao">Códigos organizados, de facil manutenção.</p>    
                     </div>
                 </li>
-                <li class="diferenciais_lista-item" data-diferencial>
-                    <img src="./imgs/diferenciais/entrega-rapida.jpg" alt="entrega rápida" class="diferenciais__lista-item--imagem">
-                    <div>
-                        <h3 class="diferenciais__lista-item--titulo">Entrega rápida</h3>
-                        <p class="diferenciais__lista-item--descricao">Entrega rápida e com qualidade.</p>
-                    </div>
-                </li>
             </ul>
         </section>
-        <section class="formulario" id="contato">
+
+        <section class="formulario">
             <h3 class="formulario__titulo">Me mande uma mensagem</h3>
             <form action="" class="form" data-formulario>
                 <fieldset class="form__item">
@@ -125,44 +186,43 @@
                 </fieldset>
                 <fieldset class="form__item">
                     <label for="data" class="form__item-titulo">Data de Nascimento</label>
-                    <input type="date" id="data" name="nascimento" placeholder="Digite seu email" class="form__item-input" required>
+                    <input type="date" id="data" name="nascimento" class="form__item-input" required>
                     <span class="mensagem__form-erro">Digite uma data válida</span>
                 </fieldset>
                 <fieldset class="form__item">
-                    <label for="msg" class="form__item-titulo">Mensagem(opcional)</label>
-                    <textarea id="msg" name="msg" rows="3" cols="25" class="form__item-input" placeholder="Digite uma mensagem"></textarea>
+                    <label for="msg" class="form__item-titulo">Mensagem</label>
+                    <textarea id="msg" name="msg" rows="3" cols="25" class="form__item-input" placeholder="Digite uma mensagem" required></textarea>
                 </fieldset>
                 <span class="mensagem__form-ok"></span>
                 <input type="submit" placeholder="Enviar" class="form__btn" id="btnEnviar">
             </form>
         </section>
-    </main>
-    <footer class="rodape" id="rodape">
-            <h3 class="rodape__titulo">Contato</h3>
+        <section class="contato" id="contato">
+            <h3 class="contato__titulo">Contato</h3>
             <ul class="contato__lista">
                 <a href="https://api.whatsapp.com/send?phone=5543998343648&text=Ol%C3%A1,%20vi%20seu%20port%C3%B3flio%20e%20queria%20fazer%20um%20or%C3%A7amento"
                     target="_blank">
-                    <img src="./imgs/contato/whats.png" alt="WhatsApp" class="contato__lista-item--imagem">
+                    <i class="fa-brands fa-whatsapp"></i>
                 </a>
                 <a href="https://www.linkedin.com/in/sergio-henrique-rodrigues-9722b5213/" target="_blank">
-                    <img src="./imgs/contato/linkedin.png" alt="Linkedin" class="contato__lista-item--imagem">
+                    <i class="fa-brands fa-linkedin"></i>
                 </a>
                 <a href="https://github.com/sergiohrodrigues" target="_blank">
-                    <img src="./imgs/contato/GITHUB.png" alt="Github" class="contato__lista-item--imagem">
+                    <i class="fa-brands fa-github"></i>
                 </a>
                 <a href="https://www.instagram.com/sergiorodriguesh" target="_blank">
-                    <img src="./imgs/contato/INSTA.png" alt="Instagram" class="contato__lista-item--imagem">
+                    <i class="fa-brands fa-instagram"></i>
                 </a>
             </ul>
-            <div class="copyright">
-                Direitos reservados por Sergio Rodrigues.
-            </div>
+        </section>
+    </main>
+
+    <footer class="rodape" id="rodape">
+        <div class="rodape__copyright">
+            Desenvolvidor por Sergio Rodrigues.
+        </div>
     </footer>
 
-    <script src="./js/form/formulario.js" type="module"></script>
-    <script src="./js/carrossel/carrossel-projetos.js" type="module"></script>
-    <script src="./js/carrossel/carrossel-diferenciais.js" type="module"></script>
-    <script src="./js/show-texto.js"></script>
+    <script src="js/main.js" type="module"></script>
 </body>
-
 </html>
