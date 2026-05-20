@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model PortfolioProfile {
+  id        String   @id @default("main")
+  locale    String   @default("pt")
+  name      String
+  role      String
+  location  String
+  avatarUrl String   @map("avatar_url")
+  summary   String
+  email     String
+  github    String
+  linkedin  String
+  whatsapp  String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([locale])
+  @@map("portfolio_profiles")
+}
+
+model PortfolioAbout {
+  id          String   @id @default("main")
+  locale      String   @default("pt")
+  headline    String
+  description String
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([locale])
+  @@map("portfolio_about")
+}
+
+model PortfolioSkill {
+  id        String   @id
+  locale    String   @default("pt")
+  name      String
+  category  String
+  level     Int
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([locale])
+  @@map("portfolio_skills")
+}
+
+model PortfolioProject {
+  id          String   @id
+  locale      String   @default("pt")
+  title       String
+  description String
+  stack       String
+  link        String   @default("")
+  repo        String   @default("")
+  featured    Boolean  @default(false)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([locale])
+  @@map("portfolio_projects")
+}
+
+model PortfolioExperience {
+  id          String   @id
+  locale      String   @default("pt")
+  role        String
+  company     String
+  period      String
+  description String
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([locale])
+  @@map("portfolio_experiences")
+}

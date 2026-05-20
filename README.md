@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio Sergio
 
-## Getting Started
+Portfolio em Next.js 16 com tela publica e painel administrativo para editar perfil, sobre mim, habilidades, projetos e experiencia.
 
-First, run the development server:
+## Rodar localmente
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Acesse:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Site: http://localhost:3000
+- Admin: http://localhost:3000/admin
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Supabase com Prisma
 
-## Learn More
+O Supabase entra como banco Postgres gratuito, e o Prisma faz a conexao e cria as tabelas.
 
-To learn more about Next.js, take a look at the following resources:
+1. Crie um projeto gratuito no Supabase.
+2. Em Project Settings > Database, copie a connection string.
+3. Crie `.env.local` baseado em `.env.example`.
+4. Preencha `DATABASE_URL`.
+5. Rode:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run prisma:push
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+O Prisma cria uma tabela para cada parte do portfolio:
 
-## Deploy on Vercel
+- `portfolio_profiles`
+- `portfolio_about`
+- `portfolio_skills`
+- `portfolio_projects`
+- `portfolio_experiences`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Depois disso, o CRUD em `/admin` salva os dados nessas tabelas separadas. Sem `DATABASE_URL`, o projeto usa `data/portfolio.json` como fallback local.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Idiomas
+
+O projeto suporta `pt` e `en` por query string:
+
+- `/?lang=pt`
+- `/?lang=en`
+- `/admin?lang=pt`
+- `/admin?lang=en`
+
+Os dados do portfolio ficam no banco com a coluna `locale`. Para criar as colunas no Supabase, rode:
+
+```bash
+npm run prisma:push
+```
+
+No admin, trocar para `EN` edita/salva os registros em ingles; trocar para `PT` edita/salva os registros em portugues.
+
+## Proteger o admin
+
+Configure tambem no `.env.local`:
+
+```bash
+ADMIN_PASSWORD="sua-senha-do-painel"
+AUTH_SECRET="uma-string-grande-aleatoria"
+```
+
+Em desenvolvimento, se `ADMIN_PASSWORD` nao existir, a senha temporaria e `admin`. Em producao, defina obrigatoriamente `ADMIN_PASSWORD` e `AUTH_SECRET` nas variaveis do deploy.
+
+## Comandos uteis
+
+```bash
+npm run prisma:generate
+npm run prisma:push
+npm run prisma:studio
+npm run lint
+npm run build
+```
