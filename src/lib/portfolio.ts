@@ -123,6 +123,23 @@ export async function readPortfolio(locale: Locale = "pt"): Promise<PortfolioDat
     return readLocalPortfolio();
   }
 
+  try {
+    const data = await readDatabasePortfolio(locale);
+
+    if (!data && locale !== "pt") {
+      return (await readDatabasePortfolio("pt")) ?? defaultPortfolio;
+    }
+
+    return data ?? defaultPortfolio;
+  } catch (error) {
+    console.error("Nao foi possivel ler o portfolio no banco.", error);
+    return defaultPortfolio;
+  }
+}
+
+async function readDatabasePortfolio(
+  locale: Locale,
+): Promise<PortfolioData | null> {
   const prisma = getPrisma();
   const profileId = singletonId("profile", locale);
   const aboutId = singletonId("about", locale);
@@ -156,8 +173,7 @@ export async function readPortfolio(locale: Locale = "pt"): Promise<PortfolioDat
   const about = aboutById ?? aboutByLocale;
 
   if (!profile && !about) {
-    await writePortfolio(defaultPortfolio, locale);
-    return defaultPortfolio;
+    return null;
   }
 
   return {

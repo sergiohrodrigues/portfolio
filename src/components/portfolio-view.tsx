@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import {
@@ -54,30 +55,36 @@ export function PortfolioView({ data, locale }: Props) {
               </p>
             </div>
             <div className="grid gap-3">
-              <a
+              <Link
                 className={cn(buttonVariants({ variant: "secondary" }), "w-full")}
                 href={`mailto:${data.profile.email}`}
               >
                 {t.email}
-              </a>
-              <a
+              </Link>
+              <Link
                 className={cn(buttonVariants({ variant: "secondary" }), "w-full")}
                 href={data.profile.linkedin}
+                target="_blank"
+                rel="noreferrer"
               >
                 LinkedIn
-              </a>
-              <a
+              </Link>
+              <Link
                 className={cn(buttonVariants({ variant: "secondary" }), "w-full")}
                 href={data.profile.github}
+                target="_blank"
+                rel="noreferrer"
               >
                 GitHub
-              </a>
-              <a
+              </Link>
+              <Link
                 className={cn(buttonVariants({ variant: "secondary" }), "w-full")}
                 href={data.profile.whatsapp}
+                target="_blank"
+                rel="noreferrer"
               >
                 WhatsApp
-              </a>
+              </Link>
             </div>
           </div>
         </aside>
@@ -101,12 +108,12 @@ export function PortfolioView({ data, locale }: Props) {
                 <h2 className="text-2xl font-semibold text-white">
                   {t.projects}
                 </h2>
-                <a
+                <Link
                   className={buttonVariants({ variant: "outline", size: "sm" })}
                   href={`/?lang=${otherLocale}`}
                 >
                   {otherLocale.toUpperCase()}
-                </a>
+                </Link>
               </div>
               <div className="grid gap-4">
                 {[...featuredProjects, ...otherProjects].map((project) => (
@@ -128,26 +135,30 @@ export function PortfolioView({ data, locale }: Props) {
                       </p>
                       <div className="mt-5 flex flex-wrap gap-3">
                         {project.link ? (
-                          <a
+                          <Link
                             className={buttonVariants({
                               variant: "outline",
                               size: "sm",
                             })}
                             href={project.link}
+                            target="_blank"
+                            rel="noreferrer"
                           >
                             {t.viewProject}
-                          </a>
+                          </Link>
                         ) : null}
                         {project.repo ? (
-                          <a
+                          <Link
                             className={buttonVariants({
                               variant: "outline",
                               size: "sm",
                             })}
                             href={project.repo}
+                            target="_blank"
+                            rel="noreferrer"
                           >
                             {t.code}
-                          </a>
+                          </Link>
                         ) : null}
                       </div>
                     </CardContent>
