@@ -23,16 +23,15 @@ export default async function LoginPage({
 }: {
   searchParams: Promise<{ error?: string; lang?: string }>;
 }) {
+  const params = await searchParams;
+  const locale = normalizeLocale(params.lang);
+  const t = labels[locale];
   const cookieStore = await cookies();
   const token = cookieStore.get(adminCookieName)?.value;
 
   if (isValidAdminToken(token)) {
-    redirect("/admin");
+    redirect(`/admin?lang=${locale}`);
   }
-
-  const params = await searchParams;
-  const locale = normalizeLocale(params.lang);
-  const t = labels[locale];
 
   async function login(formData: FormData) {
     "use server";
@@ -75,7 +74,9 @@ export default async function LoginPage({
                 {t.invalidPassword}
               </p>
             ) : null}
-            <Button className="w-full">{t.enter}</Button>
+            <Button className="w-full" type="submit">
+              {t.enter}
+            </Button>
           </form>
         </CardContent>
       </Card>
