@@ -1,19 +1,15 @@
-import Image from "next/image";
-import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
-import { buttonVariants } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { Separator } from "@/components/ui/separator";
+"use client";
+
+import { PortfolioNav } from "@/components/portfolio/portfolio-nav";
+import { ProfileSidebar } from "@/components/portfolio/profile-sidebar";
+import { AboutSection } from "@/components/portfolio/sections/about-section";
+import { ExperienceSection } from "@/components/portfolio/sections/experience-section";
+import { ProjectsSection } from "@/components/portfolio/sections/projects-section";
+import { SkillsSection } from "@/components/portfolio/sections/skills-section";
 import { labels, type Locale } from "@/lib/i18n";
-import { cn } from "@/lib/utils";
 import type { PortfolioData } from "@/lib/portfolio";
+import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 type Props = {
   data: PortfolioData;
@@ -21,206 +17,52 @@ type Props = {
 };
 
 export function PortfolioView({ data, locale }: Props) {
+  const [isDarkMode, setIsDarkMode] = useState(true);
   const t = labels[locale];
-  const otherLocale = locale === "pt" ? "en" : "pt";
   const featuredProjects = data.projects.filter((project) => project.featured);
   const otherProjects = data.projects.filter((project) => !project.featured);
+  const projects = [...featuredProjects, ...otherProjects];
 
   return (
-    <main className="dark min-h-screen bg-background text-foreground">
-      <div className="mx-auto grid min-h-screen w-full max-w-7xl grid-cols-1 lg:grid-cols-[390px_minmax(0,1fr)]">
-        <aside className="border-b bg-card px-5 py-8 sm:px-8 lg:sticky lg:top-0 lg:h-screen lg:border-r lg:border-b-0 lg:px-8 lg:py-12">
-          <div className="flex h-full flex-col justify-between gap-8">
-            <div className="space-y-7">
-              <Image
-                src={data.profile.avatarUrl || "/profile.svg"}
-                alt={data.profile.name}
-                width={320}
-                height={320}
-                priority
-                className="aspect-square w-32 rounded-xl border object-cover sm:w-44 lg:w-full"
-              />
-              <Separator />
-              <div>
-                <h2 className="text-3xl font-bold text-white">
-                  {data.profile.name}
-                </h2>
-                <p className="mt-2 text-lg text-primary">{data.profile.role}</p>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {data.profile.location}
-                </p>
-              </div>
-              <p className="leading-7 text-muted-foreground">
-                {data.profile.summary}
-              </p>
-            </div>
-            <div className="grid gap-3">
-              <Link
-                className={cn(buttonVariants({ variant: "secondary" }), "w-full")}
-                href={`mailto:${data.profile.email}`}
-              >
-                {t.email}
-              </Link>
-              <Link
-                className={cn(buttonVariants({ variant: "secondary" }), "w-full")}
-                href={data.profile.linkedin}
-                target="_blank"
-                rel="noreferrer"
-              >
-                LinkedIn
-              </Link>
-              <Link
-                className={cn(buttonVariants({ variant: "secondary" }), "w-full")}
-                href={data.profile.github}
-                target="_blank"
-                rel="noreferrer"
-              >
-                GitHub
-              </Link>
-              <Link
-                className={cn(buttonVariants({ variant: "secondary" }), "w-full")}
-                href={data.profile.whatsapp}
-                target="_blank"
-                rel="noreferrer"
-              >
-                WhatsApp
-              </Link>
-            </div>
+    <div
+      className={cn(
+        "min-h-screen bg-cover bg-center bg-fixed text-foreground transition-colors lg:h-[100svh] lg:overflow-hidden",
+        isDarkMode ? "dark bg-[#0a0e1a]" : "bg-slate-100",
+      )}
+      style={{
+        backgroundImage: isDarkMode
+          ? "url('/fundo-escuro.jpg')"
+          : "url('/fundo-claro.jpg')",
+      }}
+    >
+      <PortfolioNav labels={t} />
+
+      <div className="mx-auto grid w-full max-w-[1500px] grid-cols-1 gap-6 px-4 pb-6 pt-[76px] sm:px-6 lg:h-full lg:grid-cols-[340px_minmax(0,1fr)] lg:gap-10 lg:px-8">
+        <ProfileSidebar
+          data={data.profile}
+          isDarkMode={isDarkMode}
+          locale={locale}
+          onToggleTheme={() => setIsDarkMode((current) => !current)}
+        />
+
+        <main className="scroll-smooth bg-slate-50/90 px-6 py-10 transition-colors sm:px-10 dark:bg-[#0f1421]/90 lg:min-h-0 lg:overflow-y-auto lg:px-14">
+          <div className="space-y-14">
+            <AboutSection about={data.about} title={t.about} />
+            <SkillsSection skills={data.skills} title={t.skills} />
+            <ProjectsSection
+              projects={projects}
+              title={t.projects}
+              featuredLabel={t.featured}
+              viewProjectLabel={t.viewProject}
+              codeLabel={t.code}
+            />
+            <ExperienceSection
+              experiences={data.experiences}
+              title={t.experience}
+            />
           </div>
-        </aside>
-
-        <section className="h-auto overflow-visible px-5 py-8 sm:px-8 lg:h-screen lg:overflow-y-auto lg:px-12 lg:py-12">
-          <div className="max-w-3xl space-y-14">
-            <section className="space-y-5">
-              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
-                {t.portfolio}
-              </p>
-              <h1 className="text-4xl font-bold leading-tight text-white sm:text-5xl">
-                {data.about.headline}
-              </h1>
-              <p className="max-w-2xl text-lg leading-8 text-muted-foreground">
-                {data.about.description}
-              </p>
-            </section>
-
-            <section className="space-y-5">
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <h2 className="text-2xl font-semibold text-white">
-                  {t.projects}
-                </h2>
-                <Link
-                  className={buttonVariants({ variant: "outline", size: "sm" })}
-                  href={`/?lang=${otherLocale}`}
-                >
-                  {otherLocale.toUpperCase()}
-                </Link>
-              </div>
-              <div className="grid gap-4">
-                {[...featuredProjects, ...otherProjects].map((project) => (
-                  <Card key={project.id} className="bg-card/70">
-                    <CardHeader>
-                      <div className="flex flex-wrap items-center gap-3">
-                        <CardTitle className="text-xl text-white">
-                          {project.title}
-                        </CardTitle>
-                        {project.featured ? <Badge>{t.featured}</Badge> : null}
-                      </div>
-                      <CardDescription className="leading-7">
-                        {project.description}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm font-medium text-primary">
-                        {project.stack}
-                      </p>
-                      <div className="mt-5 flex flex-wrap gap-3">
-                        {project.link ? (
-                          <Link
-                            className={buttonVariants({
-                              variant: "outline",
-                              size: "sm",
-                            })}
-                            href={project.link}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            {t.viewProject}
-                          </Link>
-                        ) : null}
-                        {project.repo ? (
-                          <Link
-                            className={buttonVariants({
-                              variant: "outline",
-                              size: "sm",
-                            })}
-                            href={project.repo}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            {t.code}
-                          </Link>
-                        ) : null}
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </section>
-
-            <section className="space-y-5">
-              <h2 className="text-2xl font-semibold text-white">{t.skills}</h2>
-              <div className="grid gap-4 sm:grid-cols-2">
-                {data.skills.map((skill) => (
-                  <Card key={skill.id} size="sm" className="bg-card/60">
-                    <CardContent className="space-y-4">
-                      <div className="flex items-center justify-between gap-4">
-                        <div>
-                          <h3 className="font-semibold text-white">
-                            {skill.name}
-                          </h3>
-                          <p className="text-sm text-muted-foreground">
-                            {skill.category}
-                          </p>
-                        </div>
-                        <span className="text-sm font-semibold text-primary">
-                          {skill.level}%
-                        </span>
-                      </div>
-                      <Progress value={skill.level} />
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </section>
-
-            <section className="space-y-5 pb-10">
-              <h2 className="text-2xl font-semibold text-white">
-                {t.experience}
-              </h2>
-              <div className="space-y-4">
-                {data.experiences.map((experience) => (
-                  <Card key={experience.id} className="bg-card/60">
-                    <CardHeader>
-                      <CardDescription className="font-medium text-primary">
-                        {experience.period}
-                      </CardDescription>
-                      <CardTitle className="text-xl text-white">
-                        {experience.role}
-                      </CardTitle>
-                      <CardDescription>{experience.company}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="leading-7 text-muted-foreground">
-                        {experience.description}
-                      </p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </section>
-          </div>
-        </section>
+        </main>
       </div>
-    </main>
+    </div>
   );
 }

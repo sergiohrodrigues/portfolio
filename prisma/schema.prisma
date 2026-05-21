@@ -39,14 +39,12 @@ model PortfolioAbout {
 
 model PortfolioSkill {
   id        String   @id
-  locale    String   @default("pt")
   name      String
   category  String
   level     Int
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  @@index([locale])
   @@map("portfolio_skills")
 }
 

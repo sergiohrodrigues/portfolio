@@ -199,8 +199,8 @@ export function AdminPortfolioClient({ initialData, locale }: Props) {
                 ...data.skills,
                 {
                   id: id(),
-                  name: locale === "pt" ? "Nova habilidade" : "New skill",
-                  category: locale === "pt" ? "Categoria" : "Category",
+                  name: "Nova habilidade",
+                  category: "Categoria",
                   level: 70,
                 },
               ],

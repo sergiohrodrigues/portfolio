@@ -157,7 +157,6 @@ async function readDatabasePortfolio(
     prisma.portfolioProfile.findFirst({ where: { locale } }),
     prisma.portfolioAbout.findFirst({ where: { locale } }),
     prisma.portfolioSkill.findMany({
-      where: { locale },
       orderBy: { createdAt: "asc" },
     }),
     prisma.portfolioProject.findMany({
@@ -206,14 +205,13 @@ export async function writePortfolio(data: PortfolioData, locale: Locale = "pt")
       update: data.about,
       create: { id: aboutId, locale, ...data.about },
     }),
-    prisma.portfolioSkill.deleteMany({ where: { locale } }),
+    prisma.portfolioSkill.deleteMany(),
     prisma.portfolioProject.deleteMany({ where: { locale } }),
     prisma.portfolioExperience.deleteMany({ where: { locale } }),
     prisma.portfolioSkill.createMany({
       data: data.skills.map((skill) => ({
         ...skill,
-        id: scopedId(locale, skill.id),
-        locale,
+        id: unscopedId(skill.id),
       })),
     }),
     prisma.portfolioProject.createMany({
@@ -254,6 +252,10 @@ function singletonId(type: "profile" | "about", locale: Locale) {
 
 function scopedId(locale: Locale, id: string) {
   return id.startsWith(`${locale}-`) ? id : `${locale}-${id}`;
+}
+
+function unscopedId(id: string) {
+  return id.replace(/^(pt|en)-/, "");
 }
 
 function profileFromRow(row: Profile & { id: string; locale: string }): Profile {
