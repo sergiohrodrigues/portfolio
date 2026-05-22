@@ -34,9 +34,13 @@ const skillIconClasses: Record<string, string> = {
   tailwindcss: "devicon-tailwindcss-original colored",
   typescript: "devicon-typescript-plain colored",
   ts: "devicon-typescript-plain colored",
-  vue: "devicon-vuejs-plain colored",
-  "vue.js": "devicon-vuejs-plain colored",
   vuejs: "devicon-vuejs-plain colored",
+  sqlserver: "devicon-microsoftsqlserver-plain colored",
+  azure: "devicon-azure-plain colored",
+  docker: "devicon-docker-plain colored",
+  github: "devicon-github-original colored",
+  grafana: "devicon-grafana-plain colored",
+  quasar: "devicon-quasar-plain colored",
 };
 
 export function SkillIcon({ skill }: Props) {
