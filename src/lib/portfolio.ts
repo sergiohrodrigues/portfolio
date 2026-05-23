@@ -27,6 +27,23 @@ export type Skill = {
   level: number;
 };
 
+export type Study = {
+  id: string;
+  name: string;
+};
+
+export type Book = {
+  id: string;
+  name: string;
+  imageUrl: string;
+};
+
+export type Language = {
+  id: string;
+  name: string;
+  level: string;
+};
+
 export type Project = {
   id: string;
   title: string;
@@ -49,6 +66,10 @@ export type PortfolioData = {
   profile: Profile;
   about: About;
   skills: Skill[];
+  studies: Study[];
+  readBooks: Book[];
+  readingBooks: Book[];
+  languages: Language[];
   projects: Project[];
   experiences: Experience[];
 };
@@ -80,6 +101,10 @@ export const defaultPortfolio: PortfolioData = {
     { id: "typescript", name: "TypeScript", category: "Base", level: 88 },
     { id: "database", name: "SQL / Prisma", category: "Dados", level: 82 },
   ],
+  studies: [{ id: "docker", name: "Docker" }],
+  readBooks: [],
+  readingBooks: [],
+  languages: [{ id: "english", name: "Ingles", level: "B1" }],
   projects: [
     {
       id: "ecommerce",
@@ -149,6 +174,10 @@ async function readDatabasePortfolio(
     profileByLocale,
     aboutByLocale,
     skills,
+    studies,
+    readBooks,
+    readingBooks,
+    languages,
     projects,
     experiences,
   ] = await Promise.all([
@@ -157,6 +186,21 @@ async function readDatabasePortfolio(
     prisma.portfolioProfile.findFirst({ where: { locale } }),
     prisma.portfolioAbout.findFirst({ where: { locale } }),
     prisma.portfolioSkill.findMany({
+      orderBy: { createdAt: "asc" },
+    }),
+    prisma.portfolioStudy.findMany({
+      orderBy: { createdAt: "asc" },
+    }),
+    prisma.portfolioReadBook.findMany({
+      where: { locale },
+      orderBy: { createdAt: "asc" },
+    }),
+    prisma.portfolioReadingBook.findMany({
+      where: { locale },
+      orderBy: { createdAt: "asc" },
+    }),
+    prisma.portfolioLanguage.findMany({
+      where: { locale },
       orderBy: { createdAt: "asc" },
     }),
     prisma.portfolioProject.findMany({
@@ -179,6 +223,11 @@ async function readDatabasePortfolio(
     profile: profile ? profileFromRow(profile) : defaultPortfolio.profile,
     about: about ? aboutFromRow(about) : defaultPortfolio.about,
     skills: skills.length > 0 ? skills : defaultPortfolio.skills,
+    studies: studies.length > 0 ? studies : defaultPortfolio.studies,
+    readBooks,
+    readingBooks,
+    languages:
+      languages.length > 0 ? languages : defaultLanguagesForLocale(locale),
     projects: projects.length > 0 ? projects : defaultPortfolio.projects,
     experiences:
       experiences.length > 0 ? experiences : defaultPortfolio.experiences,
@@ -206,12 +255,43 @@ export async function writePortfolio(data: PortfolioData, locale: Locale = "pt")
       create: { id: aboutId, locale, ...data.about },
     }),
     prisma.portfolioSkill.deleteMany(),
+    prisma.portfolioStudy.deleteMany(),
+    prisma.portfolioReadBook.deleteMany({ where: { locale } }),
+    prisma.portfolioReadingBook.deleteMany({ where: { locale } }),
+    prisma.portfolioLanguage.deleteMany({ where: { locale } }),
     prisma.portfolioProject.deleteMany({ where: { locale } }),
     prisma.portfolioExperience.deleteMany({ where: { locale } }),
     prisma.portfolioSkill.createMany({
       data: data.skills.map((skill) => ({
         ...skill,
         id: unscopedId(skill.id),
+      })),
+    }),
+    prisma.portfolioStudy.createMany({
+      data: (data.studies ?? defaultPortfolio.studies).map((study) => ({
+        ...study,
+        id: unscopedId(study.id),
+      })),
+    }),
+    prisma.portfolioReadBook.createMany({
+      data: (data.readBooks ?? defaultPortfolio.readBooks).map((book) => ({
+        ...book,
+        id: scopedId(locale, book.id),
+        locale,
+      })),
+    }),
+    prisma.portfolioReadingBook.createMany({
+      data: (data.readingBooks ?? defaultPortfolio.readingBooks).map((book) => ({
+        ...book,
+        id: scopedId(locale, book.id),
+        locale,
+      })),
+    }),
+    prisma.portfolioLanguage.createMany({
+      data: (data.languages ?? defaultPortfolio.languages).map((language) => ({
+        ...language,
+        id: scopedId(locale, language.id),
+        locale,
       })),
     }),
     prisma.portfolioProject.createMany({
@@ -256,6 +336,16 @@ function scopedId(locale: Locale, id: string) {
 
 function unscopedId(id: string) {
   return id.replace(/^(pt|en)-/, "");
+}
+
+function defaultLanguagesForLocale(locale: Locale): Language[] {
+  return [
+    {
+      id: "english",
+      name: locale === "pt" ? "Ingles" : "English",
+      level: "B1",
+    },
+  ];
 }
 
 function profileFromRow(row: Profile & { id: string; locale: string }): Profile {

@@ -1,8 +1,9 @@
 "use client";
 
-import { Download, Mail, MessageCircle, Moon, Sun } from "lucide-react";
+import { Download, Moon, Sun } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { siGmail, siWhatsapp } from "simple-icons";
 import { SocialIcon } from "@/components/portfolio/social-icon";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -25,11 +26,13 @@ export function ProfileSidebar({
   function downloadPDF() {
     // URL do seu arquivo PDF
     const url =
-      "https://drive.usercontent.google.com/download?id=1pH8_w_WZzp2tWLnE5nd9Z8LRI_DP0iU6&export=download&authuser=1&confirm=t&uuid=c7f07020-ff8e-4636-9a67-bde7f0e7caee&at=APvzH3q-DEGDiQCYsmmlwaxn_WdL:1733495638657";
+      "https://drive.google.com/file/d/1OO6US-RKPmVK4KonPXc-AIDyNBjSij7b/view?usp=sharing";
 
     // Cria um link temporário
     const link = document.createElement("a");
     link.href = url;
+    link.target = "_blank";        // abre em nova aba
+    link.rel = "noopener noreferrer"; // boa prática de segurança
 
     // Adiciona o atributo 'download' para forçar o download
     link.download = "sergio_curriculo.pdf";
@@ -75,10 +78,14 @@ export function ProfileSidebar({
           </svg>
         </SocialIcon>
         <SocialIcon href={`mailto:${data.email}`} label="Email">
-          <Mail className="size-4" aria-hidden />
+          <svg viewBox="0 0 24 24" aria-hidden>
+            <path d={siGmail.path} />
+          </svg>
         </SocialIcon>
         <SocialIcon href={data.whatsapp} label="WhatsApp">
-          <MessageCircle className="size-4" aria-hidden />
+          <svg viewBox="0 0 24 24" aria-hidden>
+            <path d={siWhatsapp.path} />
+          </svg>
         </SocialIcon>
       </div>
 

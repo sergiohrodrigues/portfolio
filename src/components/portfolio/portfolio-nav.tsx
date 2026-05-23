@@ -17,6 +17,9 @@ export function PortfolioNav({ labels: t }: Props) {
     { href: "#habilidades", label: t.skills },
     { href: "#projetos", label: t.projects },
     { href: "#experiencia", label: t.experience },
+    { href: "#estudando", label: t.studying },
+    { href: "#idiomas", label: t.languages },
+    { href: "#livros", label: t.books },
   ];
 
   return (

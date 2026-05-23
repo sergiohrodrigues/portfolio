@@ -18,7 +18,15 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { labels, type Locale } from "@/lib/i18n";
-import type { Experience, PortfolioData, Project, Skill } from "@/lib/portfolio";
+import type {
+  Book,
+  Experience,
+  Language,
+  PortfolioData,
+  Project,
+  Skill,
+  Study,
+} from "@/lib/portfolio";
 
 type Props = {
   initialData: PortfolioData;
@@ -66,6 +74,38 @@ export function AdminPortfolioClient({ initialData, locale }: Props) {
     setData((current) => ({
       ...current,
       skills: current.skills.map((item) => (item.id === skill.id ? skill : item)),
+    }));
+
+  const updateStudy = (study: Study) =>
+    setData((current) => ({
+      ...current,
+      studies: current.studies.map((item) =>
+        item.id === study.id ? study : item,
+      ),
+    }));
+
+  const updateReadBook = (book: Book) =>
+    setData((current) => ({
+      ...current,
+      readBooks: current.readBooks.map((item) =>
+        item.id === book.id ? book : item,
+      ),
+    }));
+
+  const updateReadingBook = (book: Book) =>
+    setData((current) => ({
+      ...current,
+      readingBooks: current.readingBooks.map((item) =>
+        item.id === book.id ? book : item,
+      ),
+    }));
+
+  const updateLanguage = (language: Language) =>
+    setData((current) => ({
+      ...current,
+      languages: current.languages.map((item) =>
+        item.id === language.id ? language : item,
+      ),
     }));
 
   const updateProject = (project: Project) =>
@@ -240,6 +280,172 @@ export function AdminPortfolioClient({ initialData, locale }: Props) {
         </EditableList>
 
         <EditableList
+          title={t.studying}
+          description={t.studyingDescription}
+          addLabel={t.add}
+          onAdd={() =>
+            setData({
+              ...data,
+              studies: [
+                ...data.studies,
+                {
+                  id: id(),
+                  name: "Docker",
+                },
+              ],
+            })
+          }
+        >
+          {data.studies.map((study) => (
+            <Card key={study.id} size="sm">
+              <CardContent className="space-y-4">
+                <div className="grid gap-4 md:grid-cols-2">
+                  {field(t.name, study.name, (value) =>
+                    updateStudy({ ...study, name: value }),
+                  )}
+                </div>
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={() =>
+                    setData({
+                      ...data,
+                      studies: data.studies.filter(
+                        (item) => item.id !== study.id,
+                      ),
+                    })
+                  }
+                >
+                  {t.delete}
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </EditableList>
+
+        <EditableList
+          title={t.languages}
+          description={t.languagesDescription}
+          addLabel={t.add}
+          onAdd={() =>
+            setData({
+              ...data,
+              languages: [
+                ...data.languages,
+                {
+                  id: id(),
+                  name: locale === "pt" ? "Ingles" : "English",
+                  level: "B1",
+                },
+              ],
+            })
+          }
+        >
+          {data.languages.map((language) => (
+            <Card key={language.id} size="sm">
+              <CardContent className="space-y-4">
+                <div className="grid gap-4 md:grid-cols-2">
+                  {field(t.name, language.name, (value) =>
+                    updateLanguage({ ...language, name: value }),
+                  )}
+                  {field(t.level, language.level, (value) =>
+                    updateLanguage({ ...language, level: value }),
+                  )}
+                </div>
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={() =>
+                    setData({
+                      ...data,
+                      languages: data.languages.filter(
+                        (item) => item.id !== language.id,
+                      ),
+                    })
+                  }
+                >
+                  {t.delete}
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </EditableList>
+
+        <EditableList
+          title={t.readingBooks}
+          description={t.readingBooksDescription}
+          addLabel={t.add}
+          onAdd={() =>
+            setData({
+              ...data,
+              readingBooks: [
+                ...data.readingBooks,
+                {
+                  id: id(),
+                  name: locale === "pt" ? "Novo livro" : "New book",
+                  imageUrl: "",
+                },
+              ],
+            })
+          }
+        >
+          {data.readingBooks.map((book) => (
+            <BookForm
+              key={book.id}
+              book={book}
+              imageUrlLabel={t.imageUrl}
+              nameLabel={t.name}
+              deleteLabel={t.delete}
+              onChange={updateReadingBook}
+              onDelete={() =>
+                setData({
+                  ...data,
+                  readingBooks: data.readingBooks.filter(
+                    (item) => item.id !== book.id,
+                  ),
+                })
+              }
+            />
+          ))}
+        </EditableList>
+
+        <EditableList
+          title={t.readBooks}
+          description={t.readBooksDescription}
+          addLabel={t.add}
+          onAdd={() =>
+            setData({
+              ...data,
+              readBooks: [
+                ...data.readBooks,
+                {
+                  id: id(),
+                  name: locale === "pt" ? "Novo livro" : "New book",
+                  imageUrl: "",
+                },
+              ],
+            })
+          }
+        >
+          {data.readBooks.map((book) => (
+            <BookForm
+              key={book.id}
+              book={book}
+              imageUrlLabel={t.imageUrl}
+              nameLabel={t.name}
+              deleteLabel={t.delete}
+              onChange={updateReadBook}
+              onDelete={() =>
+                setData({
+                  ...data,
+                  readBooks: data.readBooks.filter((item) => item.id !== book.id),
+                })
+              }
+            />
+          ))}
+        </EditableList>
+
+        <EditableList
           title={t.projects}
           description={t.projectsDescription}
           addLabel={t.add}
@@ -366,6 +572,40 @@ export function AdminPortfolioClient({ initialData, locale }: Props) {
         </EditableList>
       </div>
     </main>
+  );
+}
+
+function BookForm({
+  book,
+  nameLabel,
+  imageUrlLabel,
+  deleteLabel,
+  onChange,
+  onDelete,
+}: {
+  book: Book;
+  nameLabel: string;
+  imageUrlLabel: string;
+  deleteLabel: string;
+  onChange: (book: Book) => void;
+  onDelete: () => void;
+}) {
+  return (
+    <Card size="sm">
+      <CardContent className="space-y-4">
+        <div className="grid gap-4 md:grid-cols-2">
+          {field(nameLabel, book.name, (value) =>
+            onChange({ ...book, name: value }),
+          )}
+          {field(imageUrlLabel, book.imageUrl, (value) =>
+            onChange({ ...book, imageUrl: value }),
+          )}
+        </div>
+        <Button variant="destructive" size="sm" onClick={onDelete}>
+          {deleteLabel}
+        </Button>
+      </CardContent>
+    </Card>
   );
 }
 

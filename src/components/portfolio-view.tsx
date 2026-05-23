@@ -3,9 +3,12 @@
 import { PortfolioNav } from "@/components/portfolio/portfolio-nav";
 import { ProfileSidebar } from "@/components/portfolio/profile-sidebar";
 import { AboutSection } from "@/components/portfolio/sections/about-section";
+import { BooksSection } from "@/components/portfolio/sections/books-section";
 import { ExperienceSection } from "@/components/portfolio/sections/experience-section";
+import { LanguagesSection } from "@/components/portfolio/sections/languages-section";
 import { ProjectsSection } from "@/components/portfolio/sections/projects-section";
 import { SkillsSection } from "@/components/portfolio/sections/skills-section";
+import { StudyingSection } from "@/components/portfolio/sections/studying-section";
 import { labels, type Locale } from "@/lib/i18n";
 import type { PortfolioData } from "@/lib/portfolio";
 import { cn } from "@/lib/utils";
@@ -59,6 +62,15 @@ export function PortfolioView({ data, locale }: Props) {
             <ExperienceSection
               experiences={data.experiences}
               title={t.experience}
+            />
+            <StudyingSection studies={data.studies} title={t.studying} />
+            <LanguagesSection languages={data.languages} title={t.languages} />
+            <BooksSection
+              readBooks={data.readBooks}
+              readingBooks={data.readingBooks}
+              title={t.books}
+              readTitle={t.readBooks}
+              readingTitle={t.readingBooks}
             />
           </div>
         </main>

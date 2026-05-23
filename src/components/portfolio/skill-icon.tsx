@@ -1,7 +1,7 @@
 import type { Skill } from "@/lib/portfolio";
 
 type Props = {
-  skill: Skill;
+  skill: Pick<Skill, "name">;
 };
 
 const skillIconClasses: Record<string, string> = {
@@ -41,6 +41,7 @@ const skillIconClasses: Record<string, string> = {
   github: "devicon-github-original colored",
   grafana: "devicon-grafana-plain colored",
   quasar: "devicon-quasar-plain colored",
+  terraform: "devicon-terraform-plain colored",
 };
 
 export function SkillIcon({ skill }: Props) {
