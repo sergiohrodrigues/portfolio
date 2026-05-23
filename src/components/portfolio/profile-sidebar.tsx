@@ -26,7 +26,7 @@ export function ProfileSidebar({
   function downloadPDF() {
     // URL do seu arquivo PDF
     const url =
-      "https://drive.google.com/file/d/1OO6US-RKPmVK4KonPXc-AIDyNBjSij7b/view?usp=sharing";
+      "https://drive.google.com/file/d/1iEi_OsuOpDfdJsYlmJgOvpUJZ-3cjXeu/view?usp=sharing";
 
     // Cria um link temporário
     const link = document.createElement("a");

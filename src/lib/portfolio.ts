@@ -25,6 +25,7 @@ export type Skill = {
   name: string;
   category: string;
   level: number;
+  order: number;
 };
 
 export type Study = {
@@ -95,11 +96,11 @@ export const defaultPortfolio: PortfolioData = {
       "Tenho experiencia com aplicacoes web, integracoes, bancos de dados e interfaces administrativas. Gosto de construir sistemas que sejam simples de usar, faceis de evoluir e preparados para producao.",
   },
   skills: [
-    { id: "nextjs", name: "Next.js", category: "Frontend", level: 92 },
-    { id: "react", name: "React", category: "Frontend", level: 90 },
-    { id: "node", name: "Node.js", category: "Backend", level: 86 },
-    { id: "typescript", name: "TypeScript", category: "Base", level: 88 },
-    { id: "database", name: "SQL / Prisma", category: "Dados", level: 82 },
+    { id: "nextjs", name: "Next.js", category: "Frontend", level: 92, order: 1 },
+    { id: "react", name: "React", category: "Frontend", level: 90, order: 2 },
+    { id: "node", name: "Node.js", category: "Backend", level: 86, order: 3 },
+    { id: "typescript", name: "TypeScript", category: "Base", level: 88, order: 4 },
+    { id: "database", name: "SQL / Prisma", category: "Dados", level: 82, order: 5 },
   ],
   studies: [{ id: "docker", name: "Docker" }],
   readBooks: [],
@@ -186,30 +187,30 @@ async function readDatabasePortfolio(
     prisma.portfolioProfile.findFirst({ where: { locale } }),
     prisma.portfolioAbout.findFirst({ where: { locale } }),
     prisma.portfolioSkill.findMany({
-      orderBy: { createdAt: "asc" },
+      orderBy: [{ order: "asc" }, { createdAt: "desc" }],
     }),
     prisma.portfolioStudy.findMany({
-      orderBy: { createdAt: "asc" },
+      orderBy: { createdAt: "desc" },
     }),
     prisma.portfolioReadBook.findMany({
       where: { locale },
-      orderBy: { createdAt: "asc" },
+      orderBy: { createdAt: "desc" },
     }),
     prisma.portfolioReadingBook.findMany({
       where: { locale },
-      orderBy: { createdAt: "asc" },
+      orderBy: { createdAt: "desc" },
     }),
     prisma.portfolioLanguage.findMany({
       where: { locale },
-      orderBy: { createdAt: "asc" },
+      orderBy: { createdAt: "desc" },
     }),
     prisma.portfolioProject.findMany({
       where: { locale },
-      orderBy: { createdAt: "asc" },
+      orderBy: { createdAt: "desc" },
     }),
     prisma.portfolioExperience.findMany({
       where: { locale },
-      orderBy: { createdAt: "asc" },
+      orderBy: { createdAt: "desc" },
     }),
   ]);
   const profile = profileById ?? profileByLocale;
@@ -314,7 +315,7 @@ export async function writePortfolio(data: PortfolioData, locale: Locale = "pt")
 async function readLocalPortfolio(): Promise<PortfolioData> {
   try {
     const file = await fs.readFile(dataFile, "utf8");
-    return { ...defaultPortfolio, ...JSON.parse(file) };
+    return normalizePortfolio({ ...defaultPortfolio, ...JSON.parse(file) });
   } catch {
     await writeLocalPortfolio(defaultPortfolio);
     return defaultPortfolio;
@@ -336,6 +337,16 @@ function scopedId(locale: Locale, id: string) {
 
 function unscopedId(id: string) {
   return id.replace(/^(pt|en)-/, "");
+}
+
+function normalizePortfolio(data: PortfolioData): PortfolioData {
+  return {
+    ...data,
+    skills: data.skills.map((skill, index) => ({
+      ...skill,
+      order: skill.order ?? index + 1,
+    })),
+  };
 }
 
 function defaultLanguagesForLocale(locale: Locale): Language[] {

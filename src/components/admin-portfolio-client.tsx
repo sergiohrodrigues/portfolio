@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { GripVertical } from "lucide-react";
 import { useMemo, useState } from "react";
 import type React from "react";
 import { Badge } from "@/components/ui/badge";
@@ -43,6 +44,7 @@ export function AdminPortfolioClient({ initialData, locale }: Props) {
   const otherLocale = locale === "pt" ? "en" : "pt";
   const [data, setData] = useState(initialData);
   const [status, setStatus] = useState<Status>("idle");
+  const [draggedSkillId, setDraggedSkillId] = useState<string | null>(null);
 
   const statusText = useMemo(
     () =>
@@ -53,6 +55,15 @@ export function AdminPortfolioClient({ initialData, locale }: Props) {
         error: t.saveError,
       })[status],
     [status, t.localChanges, t.saveError, t.saved, t.saving],
+  );
+
+  const orderedSkills = useMemo(
+    () =>
+      [...data.skills].sort(
+        (first, second) =>
+          first.order - second.order || first.name.localeCompare(second.name),
+      ),
+    [data.skills],
   );
 
   async function save() {
@@ -75,6 +86,33 @@ export function AdminPortfolioClient({ initialData, locale }: Props) {
       ...current,
       skills: current.skills.map((item) => (item.id === skill.id ? skill : item)),
     }));
+
+  const moveSkill = (targetSkillId: string) => {
+    if (!draggedSkillId || draggedSkillId === targetSkillId) {
+      return;
+    }
+
+    const fromIndex = orderedSkills.findIndex(
+      (skill) => skill.id === draggedSkillId,
+    );
+    const toIndex = orderedSkills.findIndex((skill) => skill.id === targetSkillId);
+
+    if (fromIndex < 0 || toIndex < 0) {
+      return;
+    }
+
+    const reorderedSkills = [...orderedSkills];
+    const [movedSkill] = reorderedSkills.splice(fromIndex, 1);
+    reorderedSkills.splice(toIndex, 0, movedSkill);
+
+    setData((current) => ({
+      ...current,
+      skills: reorderedSkills.map((skill, index) => ({
+        ...skill,
+        order: index + 1,
+      })),
+    }));
+  };
 
   const updateStudy = (study: Study) =>
     setData((current) => ({
@@ -242,15 +280,39 @@ export function AdminPortfolioClient({ initialData, locale }: Props) {
                   name: "Nova habilidade",
                   category: "Categoria",
                   level: 70,
+                  order:
+                    Math.max(0, ...data.skills.map((skill) => skill.order)) + 1,
                 },
               ],
             })
           }
         >
-          {data.skills.map((skill) => (
-            <Card key={skill.id} size="sm">
+          {orderedSkills.map((skill) => (
+            <Card
+              key={skill.id}
+              size="sm"
+              draggable
+              onDragStart={() => setDraggedSkillId(skill.id)}
+              onDragOver={(event) => event.preventDefault()}
+              onDrop={() => moveSkill(skill.id)}
+              onDragEnd={() => setDraggedSkillId(null)}
+              className={
+                draggedSkillId === skill.id
+                  ? "border-primary/60 opacity-60"
+                  : undefined
+              }
+            >
               <CardContent className="space-y-4">
-                <div className="grid gap-4 md:grid-cols-3">
+                <div className="grid gap-4 md:grid-cols-[auto_repeat(4,minmax(0,1fr))]">
+                  <div className="flex items-end">
+                    <button
+                      type="button"
+                      aria-label={t.dragToReorder}
+                      className="flex h-8 w-8 cursor-grab items-center justify-center rounded-md border text-muted-foreground active:cursor-grabbing"
+                    >
+                      <GripVertical className="size-4" />
+                    </button>
+                  </div>
                   {field(t.name, skill.name, (value) =>
                     updateSkill({ ...skill, name: value }),
                   )}
@@ -259,6 +321,10 @@ export function AdminPortfolioClient({ initialData, locale }: Props) {
                   )}
                   {field(t.level, String(skill.level), (value) =>
                     updateSkill({ ...skill, level: Number(value) }),
+                    "number",
+                  )}
+                  {field(t.order, String(skill.order), (value) =>
+                    updateSkill({ ...skill, order: Number(value) }),
                     "number",
                   )}
                 </div>

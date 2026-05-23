@@ -42,6 +42,7 @@ model PortfolioSkill {
   name      String
   category  String
   level     Int
+  order     Int      @default(0) @map("display_order")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
