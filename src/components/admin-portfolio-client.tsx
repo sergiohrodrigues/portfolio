@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { GripVertical } from "lucide-react";
-import { useMemo, useState } from "react";
+import { Children, useEffect, useMemo, useRef, useState } from "react";
 import type React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -35,6 +35,8 @@ type Props = {
 };
 
 type Status = "idle" | "saving" | "saved" | "error";
+
+const visibleItemsLimit = 5;
 
 const id = () =>
   globalThis.crypto?.randomUUID?.() ?? Math.random().toString(36).slice(2);
@@ -164,7 +166,7 @@ export function AdminPortfolioClient({ initialData, locale }: Props) {
 
   return (
     <main className="min-h-screen bg-muted/40 px-4 py-6 text-foreground sm:px-8">
-      <div className="mx-auto max-w-6xl space-y-6">
+      <div className="mx-auto max-w-6xl space-y-8">
         <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
@@ -197,9 +199,9 @@ export function AdminPortfolioClient({ initialData, locale }: Props) {
 
         <Separator />
 
-        <Card>
-          <CardHeader>
-            <CardTitle>{t.profile}</CardTitle>
+        <Card className="border-l-4 border-l-sky-500 bg-background shadow-sm">
+          <CardHeader className="border-b bg-sky-50/70 py-5 dark:bg-sky-950/20">
+            <CardTitle className="text-lg">{t.profile}</CardTitle>
             <CardDescription>
               {t.profileDescription}
             </CardDescription>
@@ -249,9 +251,9 @@ export function AdminPortfolioClient({ initialData, locale }: Props) {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>{t.about}</CardTitle>
+        <Card className="border-l-4 border-l-emerald-500 bg-background shadow-sm">
+          <CardHeader className="border-b bg-emerald-50/70 py-5 dark:bg-emerald-950/20">
+            <CardTitle className="text-lg">{t.about}</CardTitle>
             <CardDescription>
               {t.aboutDescription}
             </CardDescription>
@@ -270,6 +272,10 @@ export function AdminPortfolioClient({ initialData, locale }: Props) {
           title={t.skills}
           description={t.skillsDescription}
           addLabel={t.add}
+          showAllLabel={t.showAll}
+          showLessLabel={t.showLess}
+          accentClassName="border-l-amber-500"
+          headerClassName="bg-amber-50/70 dark:bg-amber-950/20"
           onAdd={() =>
             setData({
               ...data,
@@ -349,6 +355,10 @@ export function AdminPortfolioClient({ initialData, locale }: Props) {
           title={t.studying}
           description={t.studyingDescription}
           addLabel={t.add}
+          showAllLabel={t.showAll}
+          showLessLabel={t.showLess}
+          accentClassName="border-l-cyan-500"
+          headerClassName="bg-cyan-50/70 dark:bg-cyan-950/20"
           onAdd={() =>
             setData({
               ...data,
@@ -393,6 +403,10 @@ export function AdminPortfolioClient({ initialData, locale }: Props) {
           title={t.languages}
           description={t.languagesDescription}
           addLabel={t.add}
+          showAllLabel={t.showAll}
+          showLessLabel={t.showLess}
+          accentClassName="border-l-indigo-500"
+          headerClassName="bg-indigo-50/70 dark:bg-indigo-950/20"
           onAdd={() =>
             setData({
               ...data,
@@ -441,6 +455,10 @@ export function AdminPortfolioClient({ initialData, locale }: Props) {
           title={t.readingBooks}
           description={t.readingBooksDescription}
           addLabel={t.add}
+          showAllLabel={t.showAll}
+          showLessLabel={t.showLess}
+          accentClassName="border-l-orange-500"
+          headerClassName="bg-orange-50/70 dark:bg-orange-950/20"
           onAdd={() =>
             setData({
               ...data,
@@ -479,6 +497,10 @@ export function AdminPortfolioClient({ initialData, locale }: Props) {
           title={t.readBooks}
           description={t.readBooksDescription}
           addLabel={t.add}
+          showAllLabel={t.showAll}
+          showLessLabel={t.showLess}
+          accentClassName="border-l-lime-600"
+          headerClassName="bg-lime-50/70 dark:bg-lime-950/20"
           onAdd={() =>
             setData({
               ...data,
@@ -515,6 +537,10 @@ export function AdminPortfolioClient({ initialData, locale }: Props) {
           title={t.projects}
           description={t.projectsDescription}
           addLabel={t.add}
+          showAllLabel={t.showAll}
+          showLessLabel={t.showLess}
+          accentClassName="border-l-rose-500"
+          headerClassName="bg-rose-50/70 dark:bg-rose-950/20"
           onAdd={() =>
             setData({
               ...data,
@@ -585,6 +611,10 @@ export function AdminPortfolioClient({ initialData, locale }: Props) {
           title={t.experience}
           description={t.experienceDescription}
           addLabel={t.add}
+          showAllLabel={t.showAll}
+          showLessLabel={t.showLess}
+          accentClassName="border-l-violet-500"
+          headerClassName="bg-violet-50/70 dark:bg-violet-950/20"
           onAdd={() =>
             setData({
               ...data,
@@ -679,30 +709,86 @@ function EditableList({
   title,
   description,
   addLabel,
+  showAllLabel,
+  showLessLabel,
+  accentClassName,
+  headerClassName,
   onAdd,
   children,
 }: {
   title: string;
   description: string;
   addLabel: string;
+  showAllLabel: string;
+  showLessLabel: string;
+  accentClassName: string;
+  headerClassName: string;
   onAdd: () => void;
   children: React.ReactNode;
 }) {
+  const [showAll, setShowAll] = useState(false);
+  const shouldFocusNewItemRef = useRef(false);
+  const listRef = useRef<HTMLDivElement>(null);
+  const items = Children.toArray(children);
+  const hasHiddenItems = items.length > visibleItemsLimit;
+  const visibleItems = showAll ? items : items.slice(0, visibleItemsLimit);
+
+  useEffect(() => {
+    if (!shouldFocusNewItemRef.current) {
+      return;
+    }
+
+    shouldFocusNewItemRef.current = false;
+    const listItems = listRef.current?.querySelectorAll<HTMLElement>(
+      "[data-admin-list-item]",
+    );
+    const lastItem = listItems?.[listItems.length - 1];
+    const firstField = lastItem?.querySelector<HTMLInputElement | HTMLTextAreaElement>(
+      "input, textarea",
+    );
+
+    firstField?.focus();
+    firstField?.select();
+  }, [items.length, showAll]);
+
   return (
-    <Card>
-      <CardHeader>
+    <Card className={`border-l-4 bg-background shadow-sm ${accentClassName}`}>
+      <CardHeader className={`border-b py-5 ${headerClassName}`}>
         <div className="flex items-start justify-between gap-4">
           <div>
-            <CardTitle>{title}</CardTitle>
+            <CardTitle className="text-lg">{title}</CardTitle>
             <CardDescription>{description}</CardDescription>
           </div>
-          <Button variant="outline" onClick={onAdd}>
+          <Button
+            variant="outline"
+            onClick={() => {
+              setShowAll(true);
+              shouldFocusNewItemRef.current = true;
+              onAdd();
+            }}
+          >
             {addLabel}
           </Button>
         </div>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">{children}</div>
+        <div ref={listRef} className="space-y-4">
+          {visibleItems.map((item, index) => (
+            <div key={index} data-admin-list-item>
+              {item}
+            </div>
+          ))}
+        </div>
+        {hasHiddenItems ? (
+          <Button
+            className="mt-4"
+            variant="outline"
+            size="sm"
+            onClick={() => setShowAll((current) => !current)}
+          >
+            {showAll ? showLessLabel : showAllLabel}
+          </Button>
+        ) : null}
       </CardContent>
     </Card>
   );

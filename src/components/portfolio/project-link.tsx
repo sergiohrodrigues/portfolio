@@ -16,7 +16,7 @@ export function ProjectLink({ href, label }: Props) {
       rel="noreferrer"
       className={cn(
         buttonVariants({ variant: "outline", size: "sm" }),
-        "gap-1.5 border border-slate-300 bg-transparent text-xs text-slate-800 hover:bg-slate-100",
+        "gap-1.5 border border-slate-300 bg-transparent text-xs text-slate-800 hover:bg-slate-100 dark:border-white/20 dark:text-white dark:hover:bg-white/10",
       )}
     >
       {label}
